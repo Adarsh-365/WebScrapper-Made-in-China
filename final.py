@@ -7,7 +7,7 @@ import random
 
 import time
 import xlwt
-# from xlwt import Workbook
+from xlwt import Workbook
 import xlsxwriter
 
 # Workbook() takes one, non-optional, argument
@@ -20,12 +20,12 @@ Contact_3=None
 
 
 
-
+# from selenium.webdriver.firefox.options import Options
 from selenium import webdriver
 from bs4 import BeautifulSoup
 
 
-
+from selenium.webdriver.firefox.options import Options
 
 # create webdriver object
 
@@ -63,24 +63,24 @@ def Function(a,b):
   global Login
   name="data_"+str(a)+"_"+str(b)
   Excell=name+".xlsx"
-  workbook = xlsxwriter.Workbook(Excell)
+  # workbook = xlsxwriter.Workbook(Excell)
 
-  # The workbook object is then used to add new
-  # worksheet via the add_worksheet() method.
-  worksheet = workbook.add_worksheet()
+  # # The workbook object is then used to add new
+  # # worksheet via the add_worksheet() method.
+  # worksheet = workbook.add_worksheet()
 
-  # Use the worksheet object to write
-  # data via the write() method.
+  # # Use the worksheet object to write
+  # # data via the write() method.
 
-  worksheet.write('A1', 'Product Name')
-  worksheet.write('B1', 'Company Name')
-  worksheet.write('C1', 'Member Type')
-  worksheet.write('D1', 'Audited')
-  worksheet.write('E1', 'Contact1')
-  worksheet.write('F1', 'Contact2')
-  worksheet.write('G1', 'Fax Number')
-  worksheet.write('H1', 'Revenu')
-  # wb = Workbook()
+  # worksheet.write('A1', 'Product Name')
+  # worksheet.write('B1', 'Company Name')
+  # worksheet.write('C1', 'Member Type')
+  # worksheet.write('D1', 'Audited')
+  # worksheet.write('E1', 'Contact1')
+  # worksheet.write('F1', 'Contact2')
+  # worksheet.write('G1', 'Fax Number')
+  # worksheet.write('H1', 'Revenu')
+  wb = Workbook()
   # driver = webdriver.Chrome()  # Optional argument, if not specified will search path.
 # 
   # options = webdriver.ChromeOptions()
@@ -91,9 +91,11 @@ def Function(a,b):
   #   service= Service(chromedriver_path), 
   #   options=options,
   #   )
-  driver = webdriver.Firefox()  
+  options = Options()
+  options.add_argument('--headless')
+  driver = webdriver.Firefox()
   # add_sheet is used to create sheet.
-  # sheet1 = wb.add_sheet('Sheet 1')
+  sheet1 = wb.add_sheet('Sheet 1')
 
   row = 1
   column = 0
@@ -141,17 +143,33 @@ def Function(a,b):
     
     # with open("DATA_of_page1.html","r", encoding="utf-8") as f:
     #     html_doc=f.read()
+    
+    # def Write_in_text(r):
+    #     with open("scrap22.html", "w", encoding="utf-8") as f:
+    #         f.write(r.text)
+            
+
+
+   
+
+    # r = requests.get(url, headers={'User-Agent': random.choice(user_agents_list)})
+    # Write_in_text(r)
+    # with open("scrap22.html","r", encoding="utf-8") as f:
+    #     html=f.read()
     time.sleep(5)
     driver.get(url)
     html = driver.page_source
+  
     soup = BeautifulSoup(html, 'html.parser')
     # soup = BeautifulSoup(html_doc, 'html.parser')
     
     company_name_elements = soup.find_all('div', {'class': 'prod-info'})
     count=0
     # print(company_name_elements)
+  
     for element in company_name_elements:
         # print(element)
+        # time.sleep(5000)
         print(count)
         count+=1
         try:
@@ -353,26 +371,26 @@ def Function(a,b):
                     info=str(product_name)+","+str(company_name)+","+str(Member)+","+str(Audited)+","+str(Contact_1)+","+str(Contact_2)+","+str(Contact_3) +","+str(revenu)+'\n'
                     f.write(info)
                     
-                worksheet.write('A'+str(row), str(product_name))
-                worksheet.write('B'+str(row), str(company_name))
-                worksheet.write('C'+str(row), str(Member))
-                worksheet.write('D'+str(row), str(Audited))
-                worksheet.write('E'+str(row), str(Contact_1))
-                worksheet.write('F'+str(row), str(Contact_2))
-                worksheet.write('G'+str(row), str(Contact_3))
-                worksheet.write('H'+str(row),  str(revenu))
+                # worksheet.write('A'+str(row), str(product_name))
+                # worksheet.write('B'+str(row), str(company_name))
+                # worksheet.write('C'+str(row), str(Member))
+                # worksheet.write('D'+str(row), str(Audited))
+                # worksheet.write('E'+str(row), str(Contact_1))
+                # worksheet.write('F'+str(row), str(Contact_2))
+                # worksheet.write('G'+str(row), str(Contact_3))
+                # worksheet.write('H'+str(row),  str(revenu))
                     
-                # sheet1.write(row, column, str(product_name))
-                # sheet1.write(row, column+1, str(company_name))
-                # sheet1.write(row, column+2, str(Member))
-                # sheet1.write(row, column+3, str(Audited))
-                # sheet1.write(row, column+4, str(Contact_1))
-                # sheet1.write(row, column+5, str(Contact_2))
-                # sheet1.write(row, column+6, str(Contact_3))
-                # sheet1.write(row, column+7, str(revenu))
+                sheet1.write(row, column, str(product_name))
+                sheet1.write(row, column+1, str(company_name))
+                sheet1.write(row, column+2, str(Member))
+                sheet1.write(row, column+3, str(Audited))
+                sheet1.write(row, column+4, str(Contact_1))
+                sheet1.write(row, column+5, str(Contact_2))
+                sheet1.write(row, column+6, str(Contact_3))
+                sheet1.write(row, column+7, str(revenu))
                 row+=1  
                
-                # wb.save(Excell)
+                wb.save(Excell)
                
           
         
@@ -380,7 +398,7 @@ def Function(a,b):
         
         
         
-
+# Function(105, 110)
        
         
         
